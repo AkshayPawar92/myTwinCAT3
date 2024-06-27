@@ -1,0 +1,9 @@
+
+//To DO:
+[] Use scaling FN and create ELxxxx terminal FN/FBs with can scale 0..32767 / -32768..32767 etc.
+
+
+
+
+
+

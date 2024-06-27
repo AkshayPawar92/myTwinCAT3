@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="E_ButtonSelection" Id="{eae2fb99-bc36-498d-afa8-9a6bc50b6b63}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_ButtonSelection :
+(
+	Tap := 0,		//	toggle if Event rising edge is detected
+	Toggle := 1		//	0: off | 1: on
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

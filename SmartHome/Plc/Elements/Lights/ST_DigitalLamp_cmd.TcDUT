@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_DigitalLamp_cmd" Id="{ccefe3c2-d31e-4fe5-a339-848d6f7988ce}">
+    <Declaration><![CDATA[TYPE ST_DigitalLamp_cmd :
+STRUCT
+	E_ButtonSelection: E_ButtonSelection;
+	Toggle: ST_ToggleCmd;
+	PushButton: ST_TapCmd;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

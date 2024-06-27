@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_ToggleCmd" Id="{38a19790-9c99-42bd-8723-211b9a53c5cd}">
+    <Declaration><![CDATA[TYPE ST_ToggleCmd :
+STRUCT
+	OnOff: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

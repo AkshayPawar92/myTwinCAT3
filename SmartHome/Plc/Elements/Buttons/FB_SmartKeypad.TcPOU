@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_SmartKeypad" Id="{17aeb602-d27e-4e0c-ac87-0edb14e64c01}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_SmartKeypad
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_DigitalLamp_fb" Id="{89b4d532-18d4-4516-ac37-f61e8f345f2e}">
+    <Declaration><![CDATA[TYPE ST_DigitalLamp_fb :
+STRUCT
+	Status: BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

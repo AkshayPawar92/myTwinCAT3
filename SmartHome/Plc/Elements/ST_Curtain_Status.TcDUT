@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_Curtain_Status" Id="{8bbab29a-6af9-4500-958b-cd8f47831da4}">
+    <Declaration><![CDATA[TYPE ST_Curtain_Status :
+STRUCT
+	Open	  	: BOOL;
+	Close	 	: BOOL;
+	OpenPerc	: INT; 	//0: Closed .. 100: Full Open	
+	OpenToCloseTime: TIME := T#10S;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

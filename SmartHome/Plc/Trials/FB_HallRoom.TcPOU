@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_HallRoom" Id="{5765c4bd-3bbf-417e-956b-56981394d7f3}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HallRoom
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+	Lamp			AT %Q* 	: ARRAY [0..cMaxLamp] OF BOOL;
+	Dimmer			AT %Q* 	: ARRAY [0..cMaxDimmer] OF INT;
+	Fan						: ARRAY [0..cMaxFan] OF ST_Fan_op;
+	Curtain					: ARRAY [0..cMaxCurtain] OF ST_Curtain_op;
+END_VAR
+VAR
+	Key				AT %I* 	: ARRAY [0..cMaxLamp] OF BOOL;
+	rotarySw		AT %I* 	: ARRAY [0..cMaxDimmer] OF INT;
+	FanControl				: ARRAY [0..cMaxFan] OF ST_Fan_ip;
+	CurtainControl			: ARRAY [0..cMaxCurtain] OF ST_Curtain_ip;
+	//-------------------------------------------------------
+	rtKey: ARRAY[0..cMaxLamp] OF R_TRIG;
+	rtanOnOffCmd: ARRAY[0..cMaxFan] OF R_TRIG;
+	i: INT;
+	CurtainStatus			: ARRAY [0..cMaxCurtain] OF ST_Curtain_Status;
+	
+END_VAR
+VAR CONSTANT
+	//cMaxElement: INT := 7;
+	cMaxLamp: INT := 7;
+	cMaxDimmer: INT := 3;
+	cMaxFan: INT := 0;
+	cMaxCurtain: INT := 0;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	FOR i := 0 TO cMaxLamp BY 1 DO
+		rtKey[i](CLK:= Key[i], Q=> );
+		IF rtKey[i].Q THEN
+			Lamp[i]			:=	NOT Lamp[i];
+		END_IF
+	END_FOR
+	
+	FOR i := 0 TO cMaxDimmer BY 1 DO
+		Dimmer[i]	:=	REAL_TO_INT(F_Scaling(Variable_In:= rotarySw[i], ZeroIn:= 0, ZeroOut:= 100, SpanIn:= -32768, SpanOut:= 32767));
+		//Dimmer[i]	:=	rotarySw[i];
+	END_FOR
+
+	FOR i := 0 TO cMaxFan BY 1 DO
+		rtanOnOffCmd[i](CLK:= FanControl[i].OnOffCmd, Q=> );
+		IF rtanOnOffCmd[i].Q THEN
+			Fan[i].OnOff		:=	NOT Fan[i].OnOff;
+		END_IF
+		Fan[i].Speed			:=	FanControl[i].SpeedSp;
+	END_FOR
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

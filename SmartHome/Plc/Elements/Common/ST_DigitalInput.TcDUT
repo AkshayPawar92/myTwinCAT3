@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_DigitalInput" Id="{b43f835c-b5a2-4009-8649-f277eb23ef52}">
+    <Declaration><![CDATA[TYPE ST_DigitalInput :
+STRUCT
+	hmi_In: BOOL;
+	i_In AT %I* : BOOL;
+	mode: E_Mode;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

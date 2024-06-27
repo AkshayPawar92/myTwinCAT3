@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_AnalogLamp_cmd" Id="{a130ebe9-19a4-444a-a7a6-0db7dedc46cb}">
+    <Declaration><![CDATA[TYPE ST_AnalogLamp_cmd :
+STRUCT
+	OnOff: BOOL;
+	brightness_SP: INT;	//SP- Setpoint
+	colorCode: UDINT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

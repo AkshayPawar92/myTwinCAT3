@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.50" ClassName="CNestedPlcProjDef">
+	<DataTypes>
+		<DataType>
+			<Name GUID="{481A0C15-D2DB-59F6-F498-C30AA9C1998C}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..7] OF BOOL</Name>
+			<BitSize>64</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000030}">BOOL</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>8</Elements>
+			</ArrayInfo>
+		</DataType>
+		<DataType>
+			<Name GUID="{E1E90A9D-2E34-1B23-BC03-A5D169C28CE9}" IecBaseType="true" AutoDeleteType="true">ARRAY [0..3] OF INT</Name>
+			<BitSize>64</BitSize>
+			<BaseType GUID="{18071995-0000-0000-0000-000000000006}">INT</BaseType>
+			<ArrayInfo>
+				<LBound>0</LBound>
+				<Elements>4</Elements>
+			</ArrayInfo>
+		</DataType>
+	</DataTypes>
+	<Project GUID="{4E57323C-38A4-4A47-8838-9693FFB4BADE}" Name="Plc" PrjFilePath="..\..\Plc\Plc.plcproj" TmcFilePath="..\..\Plc\Plc.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+		<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="Plc\Plc.tmc" TmcHash="{05C5A800-E0D0-F9BC-5F47-45A76F0F17BB}">
+			<Name>Plc Instance</Name>
+			<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+			<Vars VarGrpType="1">
+				<Name>PlcTask Inputs</Name>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.Key</Name>
+					<Type GUID="{481A0C15-D2DB-59F6-F498-C30AA9C1998C}">ARRAY [0..7] OF BOOL</Type>
+				</Var>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.rotarySw</Name>
+					<Type GUID="{E1E90A9D-2E34-1B23-BC03-A5D169C28CE9}">ARRAY [0..3] OF INT</Type>
+				</Var>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.FanControl[0].OnOffCmd</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.FanControl[0].SpeedSp</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.CurtainControl[0].OpenCmd</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.CurtainControl[0].CloseCmd</Name>
+					<Type>BOOL</Type>
+				</Var>
+			</Vars>
+			<Vars VarGrpType="2" AreaNo="1">
+				<Name>PlcTask Outputs</Name>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.Lamp</Name>
+					<Type GUID="{481A0C15-D2DB-59F6-F498-C30AA9C1998C}">ARRAY [0..7] OF BOOL</Type>
+				</Var>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.Dimmer</Name>
+					<Type GUID="{E1E90A9D-2E34-1B23-BC03-A5D169C28CE9}">ARRAY [0..3] OF INT</Type>
+				</Var>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.Fan[0].OnOff</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.Fan[0].Speed</Name>
+					<Type>INT</Type>
+				</Var>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.Curtain[0].Open</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>PRG_SmartHome.HallRoom.Curtain[0].Close</Name>
+					<Type>BOOL</Type>
+				</Var>
+			</Vars>
+			<Contexts>
+				<Context>
+					<Id>0</Id>
+					<Name>PlcTask</Name>
+					<ManualConfig>
+						<OTCID>#x02010030</OTCID>
+					</ManualConfig>
+					<Priority>20</Priority>
+					<CycleTime>10000000</CycleTime>
+				</Context>
+			</Contexts>
+			<TaskPouOids>
+				<TaskPouOid Prio="20" OTCID="#x08502001"/>
+			</TaskPouOids>
+		</Instance>
+	</Project>
+</TcSmItem>

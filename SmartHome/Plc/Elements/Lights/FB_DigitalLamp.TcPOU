@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_DigitalLamp" Id="{0a131b7e-9dac-454e-a45c-2d179c7e35af}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_DigitalLamp
+VAR_INPUT
+	Lamp_cmd: ST_DigitalLamp_cmd;
+END_VAR
+VAR_OUTPUT
+	Lamp_fb: ST_DigitalLamp_fb;
+END_VAR
+VAR
+	rtOnOff_PushButton: R_TRIG;	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	rtOnOff_PushButton(CLK:= Lamp_cmd.PushButton, Q=> );
+	
+	IF Lamp_cmd.E_ButtonSelection = E_ButtonSelection.Toggle THEN
+		IF Lamp_cmd.Toggle.OnOff THEN
+			Lamp_fb.Status	:=	TRUE;
+		END_IF
+		IF NOT Lamp_cmd.Toggle.OnOff THEN
+			Lamp_fb.Status	:=	FALSE;
+		END_IF
+	ELSIF Lamp_cmd.E_ButtonSelection = E_ButtonSelection.Tap THEN
+		IF rtOnOff_PushButton.Q THEN
+			Lamp_fb.Status	:=	NOT Lamp_fb.Status;
+		END_IF
+	ELSE
+		Lamp_fb.Status		:=	FALSE;
+	END_IF
+
+
+
+
+
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

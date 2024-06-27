@@ -1,0 +1,52 @@
+Home Automation:
+----------------
+
+	Rooms:
+		Hall
+			Dimmer - 4
+			Lamp - 8
+			Fan - 1
+			Curtain - 1
+			AC - 1
+		Bedrooms1
+		Bedrooms2
+		Bedrooms3
+		Kitchen
+		StorageRoom
+
+
+======================================
+Dimmer: Analog lamps
+Lamp: OnOff lamps
+Chandelier: Analog lamp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

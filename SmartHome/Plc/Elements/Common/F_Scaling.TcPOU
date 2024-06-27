@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_Scaling" Id="{b246d2fa-77d9-4d0e-8501-0f688e6a0cc0}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_Scaling : REAL
+VAR_INPUT
+	Variable_In: REAL;		//	raw value of analog card
+	ZeroIn: REAL;			//	min limit of analog card	
+	ZeroOut: REAL;			//	max limit of analog card
+	SpanIn: REAL;			//	Scalled min limit
+	SpanOut: REAL;			//	Scalled max limit
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	F_Scaling := (((SpanOut - SpanIn) / ZeroOut) * Variable_In) + SpanIn;
+
+(*
+The formula is:
+Out := ((Variable_In - ZeroIn) / (SpanIn - ZeroIn)) * (SpanOut - ZeroOut) + ZeroOut.
+
+Scaling:
+(0..100) y = (900..1000)
+(a..b) = (y..z)
+
+Ans = (((z-y)/b) * variable) + y
+x = (((1000 - 900)/100 ) * y) + 900
+*)
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
