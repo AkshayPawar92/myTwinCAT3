@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Lamp" Id="{e8e36695-b9a1-4ccd-9563-e0163e876f6d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Lamp
+VAR_INPUT
+	
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	Key				AT %I* 	: BOOL;
+	Lamp			AT %Q* 	: BOOL;
+	rtKey: R_TRIG;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	rtKey(CLK:= Key, Q=> );
+	IF rtKey.Q THEN
+		Lamp		:=	NOT Lamp;
+	END_IF
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

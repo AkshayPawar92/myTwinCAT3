@@ -7,10 +7,21 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	FanControl				: ST_Fan_ip;
+	Fan						: ST_Fan_op;
+	rtFanOnOffCmd: R_TRIG;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[
+	rtFanOnOffCmd(CLK:= FanControl.OnOffCmd, Q=> );
+	IF rtFanOnOffCmd.Q THEN
+		Fan.OnOff		:=	NOT Fan.OnOff;
+	END_IF
+	Fan.Speed			:=	FanControl.SpeedSp;
+
+	
+	]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

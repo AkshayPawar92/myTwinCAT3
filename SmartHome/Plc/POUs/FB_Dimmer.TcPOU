@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Dimmer" Id="{31461b2f-6ed9-4354-a56c-6771a7ef4273}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Dimmer
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	rotarySw		AT %I* 	: INT;
+	Dimmer			AT %Q* 	: INT;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	Dimmer	:=	REAL_TO_INT(F_Scaling(Variable_In:= rotarySw, ZeroIn:= 0, ZeroOut:= 100, SpanIn:= -32768, SpanOut:= 32767));
+	
+	]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

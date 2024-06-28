@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_CurtainResp" Id="{eacbefc3-a936-428f-8194-43b7086a67d6}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CurtainResp
+VAR_INPUT
+	Open	 AT%I* : BOOL;
+	Close	 AT%I* : BOOL;
+	OpenToCloseTime: TIME := 10000;		
+	plcCylTime_mSec: INT := 10;	
+END_VAR
+VAR_OUTPUT
+	AtOpen	 AT%Q* 	: BOOL;		// Sensor Feedback	
+	AtClose	 AT%Q*	: BOOL;		// Sensor Feedback
+END_VAR
+VAR
+	OpenTime: INT;
+
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	OpenTime	:=	LIMIT(0 , OpenTime , OpenToCloseTime);
+
+	IF Open THEN
+		OpenTime := OpenTime + plcCylTime_mSec;
+	END_IF
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

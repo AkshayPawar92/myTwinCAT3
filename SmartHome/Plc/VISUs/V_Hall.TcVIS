@@ -603,7 +603,7 @@
                       <l n="VisualElemMemberList" t="VisualElemMemberCollection" cet="VisualElemMember">
                         <o>
                           <v n="Id">1186196937L</v>
-                          <v n="Value">"PRG_SmartHome.HallRoom.Key[0]"</v>
+                          <v n="Value">"PRG_SmartHome.fbRoom.fbLamp[0].Key"</v>
                         </o>
                       </l>
                     </o>
@@ -857,7 +857,7 @@
                     </o>
                     <o>
                       <v n="Id">1999528970L</v>
-                      <v n="Value">"PRG_SmartHome.HallRoom.Lamp[0]"</v>
+                      <v n="Value">"PRG_SmartHome.fbRoom.fbLamp[0].Lamp"</v>
                     </o>
                     <o>
                       <v n="Id">3719097617L</v>
@@ -946,7 +946,7 @@
                       <l n="VisualElemMemberList" t="VisualElemMemberCollection" cet="VisualElemMember">
                         <o>
                           <v n="Id">1186196937L</v>
-                          <v n="Value">"PRG_SmartHome.HallRoom.Key[1]"</v>
+                          <v n="Value">"PRG_SmartHome.fbRoom.fbLamp[1].Key"</v>
                         </o>
                       </l>
                     </o>
@@ -1200,7 +1200,7 @@
                     </o>
                     <o>
                       <v n="Id">1999528970L</v>
-                      <v n="Value">"PRG_SmartHome.HallRoom.Lamp[1]"</v>
+                      <v n="Value">"PRG_SmartHome.fbRoom.fbLamp[1].Lamp"</v>
                     </o>
                     <o>
                       <v n="Id">3719097617L</v>
@@ -1289,7 +1289,7 @@
                       <l n="VisualElemMemberList" t="VisualElemMemberCollection" cet="VisualElemMember">
                         <o>
                           <v n="Id">1186196937L</v>
-                          <v n="Value">"PRG_SmartHome.HallRoom.Key[3]"</v>
+                          <v n="Value">"PRG_SmartHome.fbRoom.fbLamp[3].Key"</v>
                         </o>
                       </l>
                     </o>
@@ -1543,7 +1543,7 @@
                     </o>
                     <o>
                       <v n="Id">1999528970L</v>
-                      <v n="Value">"PRG_SmartHome.HallRoom.Lamp[3]"</v>
+                      <v n="Value">"PRG_SmartHome.fbRoom.fbLamp[3].Lamp"</v>
                     </o>
                     <o>
                       <v n="Id">3719097617L</v>
@@ -1632,7 +1632,7 @@
                       <l n="VisualElemMemberList" t="VisualElemMemberCollection" cet="VisualElemMember">
                         <o>
                           <v n="Id">1186196937L</v>
-                          <v n="Value">"PRG_SmartHome.HallRoom.Key[2]"</v>
+                          <v n="Value">"PRG_SmartHome.fbRoom.fbLamp[2].Key"</v>
                         </o>
                       </l>
                     </o>
@@ -1886,7 +1886,7 @@
                     </o>
                     <o>
                       <v n="Id">1999528970L</v>
-                      <v n="Value">"PRG_SmartHome.HallRoom.Lamp[2]"</v>
+                      <v n="Value">"PRG_SmartHome.fbRoom.fbLamp[2].Lamp"</v>
                     </o>
                     <o>
                       <v n="Id">3719097617L</v>
@@ -2075,7 +2075,7 @@
                     </o>
                     <o>
                       <v n="Id">397264524L</v>
-                      <v n="Value">"PRG_SmartHome.HallRoom.rotarySw[0]"</v>
+                      <v n="Value">"PRG_SmartHome.fbRoom.fbDimmer[0].rotarySw"</v>
                     </o>
                     <o>
                       <v n="Id">2597686782L</v>
@@ -2239,16 +2239,16 @@
                       <v n="Value">"%i"</v>
                     </o>
                     <o>
-                      <v n="Id">823443203L</v>
-                      <v n="Value">"974"</v>
-                    </o>
-                    <o>
                       <v n="Id">2477733581L</v>
-                      <v n="Value">"PRG_SmartHome.HallRoom.Dimmer[0]"</v>
+                      <v n="Value">"PRG_SmartHome.fbRoom.fbDimmer[0].Dimmer"</v>
                     </o>
                     <o>
                       <v n="Id">2597686782L</v>
                       <v n="Value">false</v>
+                    </o>
+                    <o>
+                      <v n="Id">823443203L</v>
+                      <v n="Value">"974"</v>
                     </o>
                   </l>
                 </o>

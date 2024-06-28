@@ -3,15 +3,41 @@
   <POU Name="FB_Room" Id="{442c75c1-7593-4393-b6bc-5705fce27c62}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Room
 VAR_INPUT
-	keypad1 : FB_Keypad_4x2_Tap;
 END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	fbLamp : ARRAY[0..3] OF FB_Lamp;
+	fbDimmer : ARRAY[0..3] OF FB_Dimmer;
+	fbFan: FB_Fan;
+	fbCurtain: FB_Curtain;
+	i: INT;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[	
+	FOR i := 0 TO 3 BY 1 DO
+		fbLamp[i]();
+		fbDimmer[i]();
+	END_FOR
+	fbFan();
+	
+	fbCurtain();
+	
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

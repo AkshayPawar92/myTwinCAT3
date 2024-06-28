@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_CurtainPos" Id="{f5486faf-564d-4827-b6e2-3a00d2171e05}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CurtainPos
+VAR_INPUT
+	AtOpen: BOOL;
+	AtClose: BOOL;
+	plcCylTime_mSec: INT := 10;
+	OpenToCloseTime: INT;
+END_VAR
+VAR_OUTPUT
+	OpenPerc: INT;
+	
+END_VAR
+VAR
+	rtAtOpen : R_TRIG;
+	ftAtOpen : F_TRIG;
+	rtAtClose : R_TRIG;
+	ftAtClose : F_TRIG;
+	
+	nOpenToCloseTime: INT;
+	timeLapsed: INT;
+	M_ftAtOpen: BOOL;
+	M_ftAtClose: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[	rtAtOpen(CLK:= AtOpen, Q=> );
+	ftAtOpen(CLK:= AtOpen, Q=> );
+
+	rtAtClose(CLK:= AtClose, Q=> );
+	ftAtClose(CLK:= AtClose, Q=> );
+	
+	nOpenToCloseTime :=	(OpenToCloseTime);
+	
+	IF rtAtOpen.Q THEN
+		OpenPerc	:=	100;
+		timeLapsed	:=	0;
+	END_IF
+	IF rtAtClose.Q THEN
+		OpenPerc	:=	0;
+		timeLapsed	:=	0;
+	END_IF
+
+	IF (ftAtOpen.Q OR M_ftAtOpen) AND (NOT AtOpen) AND (NOT AtClose) THEN
+		timeLapsed	:=	LIMIT(0 , timeLapsed + plcCylTime_mSec, nOpenToCloseTime);
+		OpenPerc	:=	(100 - REAL_TO_INT(F_Scaling(Variable_In:= timeLapsed, ZeroIn:= 0, ZeroOut:= nOpenToCloseTime, SpanIn:= 0, SpanOut:= 100)));
+		M_ftAtOpen	:=	TRUE;
+	END_IF
+
+	IF (ftAtClose.Q OR M_ftAtClose) AND (NOT AtOpen) AND (NOT AtClose) THEN
+		timeLapsed	:=	LIMIT(0 , timeLapsed + plcCylTime_mSec, nOpenToCloseTime);
+		OpenPerc	:=	(REAL_TO_INT(F_Scaling(Variable_In:= timeLapsed, ZeroIn:= 0, ZeroOut:= nOpenToCloseTime, SpanIn:= 0, SpanOut:= 100)));
+		M_ftAtClose	:=	TRUE;
+	END_IF
+
+	
+
+
+
+
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

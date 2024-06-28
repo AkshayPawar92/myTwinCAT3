@@ -39,9 +39,6 @@
     <Compile Include="Elements\Common\E_Mode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Elements\Common\F_Scaling.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Elements\Common\ST_DigitalInput.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -52,6 +49,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Elements\Common\ST_TapCmd.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Elements\Helper\FB_CurtainPos.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Elements\Helper\F_Scaling.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Elements\Lights\E_ButtonSelection.TcDUT">
@@ -75,12 +78,6 @@
     <Compile Include="Elements\Lights\ST_DigitalLamp_fb.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Elements\ST_Curtain_ip.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Elements\ST_Curtain_op.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Elements\ST_Curtain_Status.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -102,7 +99,13 @@
     <Compile Include="POUs\FB_Curtain.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\FB_Dimmer.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\FB_Fan.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\FB_Lamp.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\FB_Room.TcPOU">
@@ -111,11 +114,12 @@
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Trials\FB_HallRoom.TcPOU">
+    <Compile Include="POUs\PRG_SmartHome.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Trials\PRG_SmartHome.TcPOU">
+    <Compile Include="Trials\FB_HallRoom.TcPOU">
       <SubType>Code</SubType>
+      <ExcludeFromBuild>true</ExcludeFromBuild>
     </Compile>
     <Compile Include="Visualization Manager.TcVMO">
       <SubType>Code</SubType>
@@ -138,6 +142,7 @@
     <Folder Include="Elements\Buttons" />
     <Folder Include="Elements\Lights" />
     <Folder Include="Elements\Common" />
+    <Folder Include="Elements\Helper" />
     <Folder Include="GVLs" />
     <Folder Include="Elements" />
     <Folder Include="Trials" />

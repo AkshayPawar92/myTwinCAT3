@@ -1,6 +1,8 @@
 
-//To DO:
+// To Do:
 [] Use scaling FN and create ELxxxx terminal FN/FBs with can scale 0..32767 / -32768..32767 etc.
+[] use teaching function for finding out curtains time to fully Open, Save time to persistent memory
+
 
 
 

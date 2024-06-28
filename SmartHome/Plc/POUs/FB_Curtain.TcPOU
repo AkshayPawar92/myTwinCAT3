@@ -7,10 +7,53 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	OpenCmd AT%I* : BOOL;
+	CloseCmd AT%I* : BOOL;	
+	AtOpen	 AT%I* 	: BOOL;		// Sensor Feedback	
+	AtClose	 AT%I*	: BOOL;		// Sensor Feedback
+
+	Open	 AT%Q* : BOOL;
+	Close	 AT%Q* : BOOL;	
+	
+	OpenPerc	: INT; 	//0: Closed .. 100: Full Open	
+	OpenToCloseTime: TIME := T#10S;	
+	fbCurtainPos: FB_CurtainPos;
+	rtOpenCmd: R_TRIG;
+	rtCloseCmd: R_TRIG;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[
+	rtOpenCmd(CLK:= OpenCmd, Q=> );
+	rtCloseCmd(CLK:= CloseCmd, Q=> );
+	
+	IF rtOpenCmd.Q THEN
+		Open		:=	NOT Open;
+		Close		:=	FALSE;
+	END_IF
+	IF rtCloseCmd.Q THEN
+		Open		:=	FALSE;
+		Close		:=	NOT Close;
+	END_IF
+	
+	IF AtOpen THEN
+		Open		:=	FALSE;
+	END_IF
+	IF AtClose THEN
+		Close		:=	FALSE;
+	END_IF
+	
+	fbCurtainPos(
+		AtOpen:= Open, 
+		AtClose:= Close, 
+		plcCylTime_mSec:= 10, 
+		OpenToCloseTime:= OpenToCloseTime, 
+		OpenPerc=> OpenPerc);
+		
+
+
+
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

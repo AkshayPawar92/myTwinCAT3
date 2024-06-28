@@ -39,6 +39,7 @@ END_VAR
 		END_IF
 	END_FOR
 	
+	
 	FOR i := 0 TO cMaxDimmer BY 1 DO
 		Dimmer[i]	:=	REAL_TO_INT(F_Scaling(Variable_In:= rotarySw[i], ZeroIn:= 0, ZeroOut:= 100, SpanIn:= -32768, SpanOut:= 32767));
 		//Dimmer[i]	:=	rotarySw[i];
