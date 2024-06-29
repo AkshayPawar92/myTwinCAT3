@@ -13,6 +13,8 @@ VAR
 	errId: UDINT;
 	sData: STRING(255);
 	send: BOOL;
+	sReceivedData: STRING(255);
+	nRecBytes: UDINT;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -28,6 +30,8 @@ END_VAR
 		closeAll:= closeAll, 
 		busy=> busy, 
 		connected=> connected, 
+		sReceivedData=> sReceivedData,
+		nRecBytes=> nRecBytes,
 		errId=> errId);
 
 	connect	:=	FALSE;

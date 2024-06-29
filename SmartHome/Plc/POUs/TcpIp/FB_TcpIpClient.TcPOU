@@ -6,7 +6,7 @@ VAR_INPUT
 	connect: BOOL;
 	srvIpAddr: STRING;	//Server's IP Address
 	port: UDINT;
-	sData: STRING;
+	sData: STRING(255);
 	send: BOOL;
 	reset: BOOL;
 	close: BOOL;
@@ -15,6 +15,8 @@ END_VAR
 VAR_OUTPUT
 	busy: BOOL;
 	connected: BOOL;
+	sReceivedData: STRING(255);
+	nRecBytes: UDINT;
 	errId: UDINT;
 END_VAR
 VAR
@@ -22,17 +24,24 @@ VAR
 	fbClose: FB_SocketClose;
 	fbCloseAll: FB_SocketCloseAll;
 	fbSend: FB_SocketSend;
+	fbReceive: FB_SocketReceive;
 	step: (eIdle, eInit, eError, ePreConnect, eConnect, ePreClose, eClose, ePreCloseAll, eCloseAll, ePreSend, eSend);
+	step_rec: (eIdle_rec, ePreReceive_rec, eReceive_rec, eWait_rec, eError_rec);
 	rtConnect: R_TRIG;
 	rtClose: R_TRIG;
 	rtCloseAll: R_TRIG;
 	rtReset: R_TRIG;
 	rtSend: R_TRIG;
+	tonWait: TON;
+	sReceivedData_loc: STRING(255);	
+	M_ErrGeneratedAtRec: BOOL;
 END_VAR
-]]></Declaration>
+
+VAR CONSTANT
+	NullChar: BYTE := 0;
+END_VAR]]></Declaration>
     <Implementation>
-      <ST><![CDATA[
-	rtConnect	(CLK:= connect, Q=> );
+      <ST><![CDATA[	rtConnect	(CLK:= connect, Q=> );
 	rtClose		(CLK:= close, Q=> );
 	rtCloseAll	(CLK:= closeAll, Q=> );	
 	rtReset		(CLK:= reset, Q=> );	
@@ -41,24 +50,31 @@ END_VAR
 	CASE step OF
 	eIdle:			
 		IF rtConnect.Q THEN
+			errId				:=	0;
+			busy				:=	TRUE;
+			connected			:=	FALSE;
 			step				:=	eInit;
 		END_IF
 		IF rtClose.Q THEN
 			fbClose(bExecute	:= FALSE);
+			errId				:=	0;
+			busy				:=	TRUE;
 			step				:=	ePreClose;			
 		END_IF
 		IF rtCloseAll.Q THEN
-			fbCloseAll(	bExecute:= FALSE); 
+			fbCloseAll(	bExecute:= FALSE);
+			errId				:=	0; 
+			busy				:=	TRUE;
 			step				:=	ePreCloseAll;
 		END_IF
 		IF rtSend.Q THEN
 			fbSend(bExecute		:=	FALSE);
+			busy				:=	TRUE;
+			errId				:=	0;
 			step				:=	ePreSend;
 		END_IF
-		busy				:=	FALSE;
 
 	eInit:
-		busy				:=	TRUE;
 	
 		fbConnect(
 			sSrvNetId		:= '', 
@@ -99,9 +115,6 @@ END_VAR
 			bError			=> , 
 			nErrId			=> );
 			
-		errId				:=	0;
-		connected			:=	FALSE;
-			
 		step				:=	ePreConnect;
 		
 	ePreConnect:
@@ -125,6 +138,7 @@ END_VAR
 			
 		IF (NOT fbConnect.bBusy) AND (NOT fbConnect.bError) AND (fbConnect.hSocket.handle <> 0) THEN
 			connected		:=	TRUE;
+			busy			:=	FALSE;
 			step			:=	eIdle;
 		ELSIF fbConnect.bError THEN
 			errID			:=	fbConnect.nErrId;
@@ -151,6 +165,7 @@ END_VAR
 		IF (NOT fbClose.bBusy) AND (NOT fbClose.bError) THEN
 			step			:=	eIdle;
 			connected		:=	FALSE;
+			busy			:=	FALSE;
 		ELSIF fbCLose.bError THEN
 			errID			:=	fbClose.nErrId;
 			step			:=	eError;
@@ -172,6 +187,7 @@ END_VAR
 		IF (NOT fbCloseAll.bBusy) AND (NOT fbCloseAll.bError) THEN
 			step			:=	eIdle;
 			connected		:=	FALSE;
+			busy			:=	FALSE;
 		ELSIF fbCloseAll.bError THEN
 			errID			:=	fbCloseAll.nErrId;
 			step			:=	eError;
@@ -200,6 +216,7 @@ END_VAR
 
 		IF (NOT fbSend.bBusy) AND (NOT fbSend.bError) THEN
 			step			:=	eIdle;
+			busy			:=	FALSE;
 		ELSIF fbSend.bError THEN
 			errID			:=	fbSend.nErrId;
 			step			:=	eError;
@@ -208,13 +225,91 @@ END_VAR
 	eError:
 		busy				:=	FALSE;
 		
-		IF rtReset.Q THEN
-			step			:=	eIdle;
-			errID			:=	0;
+		step				:=	eIdle;
+//		IF rtReset.Q THEN
+//			step			:=	eIdle;
+//			errID			:=	0;
+//		END_IF
+		
+	END_CASE
+	
+//	################################
+	CASE step_rec OF
+	eIdle_rec:
+		IF connected THEN
+			fbReceive(
+				sSrvNetId		:= '', 
+				hSocket			:= fbConnect.hSocket, 
+				bExecute		:= FALSE, 
+				tTimeout		:= DEFAULT_ADS_TIMEOUT, 
+				bBusy			=> , 
+				bError			=> , 
+				nErrId			=> , 
+				nRecBytes		=> nRecBytes);
+			
+			//MEMCPY(destAddr:= ADR(sReceivedData_loc), srcAddr:= ADR(NullChar), n:= SIZEOF(sReceivedData_loc));	
+			tonWait(IN:= FALSE);
+			step_rec			:=	ePreReceive_rec;	
+		END_IF
+		
+	ePreReceive_rec:
+		fbReceive( 
+			cbLen			:= SIZEOF(sReceivedData_loc), 
+			pDest			:= ADR(sReceivedData_loc), 
+			bExecute		:= TRUE, 
+			nRecBytes		=> nRecBytes);	
+		
+		IF fbReceive.bBusy THEN
+			step_rec		:=	eReceive_rec;
+		ELSIF fbReceive.bError THEN
+			errId			:=	fbReceive.nErrId;
+			M_ErrGeneratedAtRec	:=	TRUE;
+			step_rec		:=	eError_rec;			
+		END_IF
+	
+	eReceive_rec:
+		fbReceive( 
+			cbLen			:= SIZEOF(sReceivedData_loc), 
+			pDest			:= ADR(sReceivedData_loc), 
+			bExecute		:= FALSE, 
+			nRecBytes		=> nRecBytes);	
+		
+		IF (NOT fbReceive.bBusy) AND (NOT fbReceive.bError) THEN			
+			IF nRecBytes > 0 THEN				
+				sReceivedData		:=	LEFT(sReceivedData_loc, UDINT_TO_INT(nRecBytes));
+			END_IF
+			step_rec		:=	eWait_rec;			
+		ELSIF fbReceive.bError THEN
+			errId			:=	fbReceive.nErrId;
+			M_ErrGeneratedAtRec	:=	TRUE;
+			step_rec		:=	eError_rec;
+		END_IF	
+			
+	eWait_rec:
+		tonWait(IN:= TRUE, PT:= T#2S, Q=> , ET=> );
+		IF tonWait.Q THEN
+			step_rec			:=	eIdle_rec;
+			tonWait(IN:= FALSE);
+		END_IF
+		
+	eError_rec:
+		tonWait(IN:= TRUE, PT:= T#2S, Q=> , ET=> );
+		
+		fbReceive(
+			bExecute		:= FALSE);
+			
+		IF tonWait.Q THEN
+			IF M_ErrGeneratedAtRec THEN
+				errId					:=	0;
+				M_ErrGeneratedAtRec		:=	FALSE;
+			END_IF			
+			tonWait(IN:= FALSE);
+			step_rec			:=	eIdle_rec;			
 		END_IF
 		
 	END_CASE
-
+	
+//	Calling	############################
 	fbConnect(
 		sSrvNetId		:= , 
 		sRemoteHost		:= , 
@@ -254,13 +349,17 @@ END_VAR
 		bError			=> , 
 		nErrId			=> );
 
-
-
-
-
-
-
-
+	fbReceive(
+		sSrvNetId		:= , 
+		hSocket			:= , 
+		cbLen			:= , 
+		pDest			:= , 
+		bExecute		:= , 
+		tTimeout		:= , 
+		bBusy			=> , 
+		bError			=> , 
+		nErrId			=> , 
+		nRecBytes		=> );
 
 
 ]]></ST>
