@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="PRG_Testing" Id="{2a28aa0d-783a-4ee2-937c-0af4a73c92e8}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_Testing
+VAR
+	fbTcpIpClient: FB_TcpIpClient;
+	connect: BOOL;
+	reset: BOOL;
+	close: BOOL;
+	closeAll: BOOL;
+	busy: BOOL;
+	connected: BOOL;
+	errId: UDINT;
+	sData: STRING(255);
+	send: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	fbTcpIpClient(
+		connect:= connect, 
+		srvIpAddr:= '192.168.1.7', 
+		port:= 23, 
+		sData:= sData,
+		send:= send,
+		reset:= reset, 
+		close:= close, 
+		closeAll:= closeAll, 
+		busy=> busy, 
+		connected=> connected, 
+		errId=> errId);
+
+	connect	:=	FALSE;
+	reset	:=	FALSE;
+	close	:=	FALSE;
+	closeAll	:=	FALSE;
+	send:=	FALSE;
+	
+	
+	
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

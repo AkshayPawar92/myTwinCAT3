@@ -8,6 +8,7 @@ END_VAR
     <Implementation>
       <ST><![CDATA[
 	PRG_SmartHome();
+	PRG_Testing();
 	]]></ST>
     </Implementation>
   </POU>

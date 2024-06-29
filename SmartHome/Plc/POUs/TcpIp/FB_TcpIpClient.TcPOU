@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_TcpIpClient" Id="{113ef9ab-a832-4d5b-912f-d3ca6aba59e1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TcpIpClient
+VAR_INPUT
+	connect: BOOL;
+	srvIpAddr: STRING;	//Server's IP Address
+	port: UDINT;
+	sData: STRING;
+	send: BOOL;
+	reset: BOOL;
+	close: BOOL;
+	closeAll: BOOL;
+END_VAR
+VAR_OUTPUT
+	busy: BOOL;
+	connected: BOOL;
+	errId: UDINT;
+END_VAR
+VAR
+	fbConnect: FB_SocketConnect;
+	fbClose: FB_SocketClose;
+	fbCloseAll: FB_SocketCloseAll;
+	fbSend: FB_SocketSend;
+	step: (eIdle, eInit, eError, ePreConnect, eConnect, ePreClose, eClose, ePreCloseAll, eCloseAll, ePreSend, eSend);
+	rtConnect: R_TRIG;
+	rtClose: R_TRIG;
+	rtCloseAll: R_TRIG;
+	rtReset: R_TRIG;
+	rtSend: R_TRIG;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	rtConnect	(CLK:= connect, Q=> );
+	rtClose		(CLK:= close, Q=> );
+	rtCloseAll	(CLK:= closeAll, Q=> );	
+	rtReset		(CLK:= reset, Q=> );	
+	rtSend		(CLK:= send, Q=> );	
+
+	CASE step OF
+	eIdle:			
+		IF rtConnect.Q THEN
+			step				:=	eInit;
+		END_IF
+		IF rtClose.Q THEN
+			fbClose(bExecute	:= FALSE);
+			step				:=	ePreClose;			
+		END_IF
+		IF rtCloseAll.Q THEN
+			fbCloseAll(	bExecute:= FALSE); 
+			step				:=	ePreCloseAll;
+		END_IF
+		IF rtSend.Q THEN
+			fbSend(bExecute		:=	FALSE);
+			step				:=	ePreSend;
+		END_IF
+		busy				:=	FALSE;
+
+	eInit:
+		busy				:=	TRUE;
+	
+		fbConnect(
+			sSrvNetId		:= '', 
+			sRemoteHost		:= srvIpAddr, 
+			nRemotePort		:= port, 
+			bExecute		:= FALSE, 
+			tTimeout		:= DEFAULT_ADS_TIMEOUT, 
+			bBusy			=> , 
+			bError			=> , 
+			nErrId			=> , 
+			hSocket			=> );
+
+		fbClose(
+			sSrvNetId		:= '', 
+			hSocket			:= fbConnect.hSocket, 
+			bExecute		:= FALSE, 
+			tTimeout		:= DEFAULT_ADS_TIMEOUT, 
+			bBusy			=> , 
+			bError			=> , 
+			nErrId			=> );
+			
+		fbCloseAll(
+			sSrvNetId		:= '', 
+			bExecute		:= FALSE, 
+			tTimeout		:= DEFAULT_ADS_TIMEOUT, 
+			bBusy			=> , 
+			bError			=> , 
+			nErrId			=> );
+			
+		fbSend(
+			sSrvNetId		:= '', 
+			hSocket			:= , 
+			cbLen			:= , 
+			pSrc			:= , 
+			bExecute		:= FALSE, 
+			tTimeout		:= DEFAULT_ADS_TIMEOUT, 
+			bBusy			=> , 
+			bError			=> , 
+			nErrId			=> );
+			
+		errId				:=	0;
+		connected			:=	FALSE;
+			
+		step				:=	ePreConnect;
+		
+	ePreConnect:
+		fbConnect(
+			bExecute		:= TRUE, 
+			tTimeout		:= DEFAULT_ADS_TIMEOUT,  
+			hSocket			=> );	
+			
+		IF fbConnect.bBusy THEN
+			step			:=	eConnect;
+		ELSIF fbConnect.bError THEN
+			errID			:=	fbConnect.nErrId;
+			step			:=	eError;	
+		END_IF
+	
+	eConnect:	
+		fbConnect(
+			bExecute		:= FALSE, 
+			tTimeout		:= DEFAULT_ADS_TIMEOUT,  
+			hSocket			=> );	
+			
+		IF (NOT fbConnect.bBusy) AND (NOT fbConnect.bError) AND (fbConnect.hSocket.handle <> 0) THEN
+			connected		:=	TRUE;
+			step			:=	eIdle;
+		ELSIF fbConnect.bError THEN
+			errID			:=	fbConnect.nErrId;
+			step			:=	eError;	
+		END_IF
+		
+	ePreClose:
+		fbClose(
+			hSocket			:= fbConnect.hSocket, 
+			bExecute		:= TRUE);
+			
+		IF fbClose.bBusy THEN
+			step			:=	eClose;
+		ELSIF fbCLose.bError THEN
+			errID			:=	fbClose.nErrId;
+			step			:=	eError;
+		END_IF
+	
+	eClose:
+		fbClose(
+			hSocket			:= fbConnect.hSocket, 
+			bExecute		:= FALSE);
+			
+		IF (NOT fbClose.bBusy) AND (NOT fbClose.bError) THEN
+			step			:=	eIdle;
+			connected		:=	FALSE;
+		ELSIF fbCLose.bError THEN
+			errID			:=	fbClose.nErrId;
+			step			:=	eError;
+		END_IF
+		
+	ePreCloseAll:
+		fbCloseAll(bExecute		:= TRUE);
+			
+		IF fbCloseAll.bBusy THEN
+			step			:=	eCloseAll;
+		ELSIF fbCloseAll.bError THEN
+			errID			:=	fbCloseAll.nErrId;
+			step			:=	eError;
+		END_IF
+	
+	eCloseAll:
+		fbCloseAll(bExecute		:= FALSE);
+			
+		IF (NOT fbCloseAll.bBusy) AND (NOT fbCloseAll.bError) THEN
+			step			:=	eIdle;
+			connected		:=	FALSE;
+		ELSIF fbCloseAll.bError THEN
+			errID			:=	fbCloseAll.nErrId;
+			step			:=	eError;
+		END_IF
+	
+	ePreSend:
+		fbSend( 
+			hSocket			:= fbConnect.hSocket, 
+			cbLen			:= LEN(sData), 
+			pSrc			:= ADR(sData), 
+			bExecute		:= TRUE);
+
+		IF (fbSend.bBusy) THEN
+			step			:=	eSend;
+		ELSIF fbSend.bError THEN
+			errID			:=	fbSend.nErrId;
+			step			:=	eError;
+		END_IF
+	
+	eSend:
+		fbSend( 
+			hSocket			:= fbConnect.hSocket, 
+			cbLen			:= LEN(sData), 
+			pSrc			:= ADR(sData), 
+			bExecute		:= FALSE);
+
+		IF (NOT fbSend.bBusy) AND (NOT fbSend.bError) THEN
+			step			:=	eIdle;
+		ELSIF fbSend.bError THEN
+			errID			:=	fbSend.nErrId;
+			step			:=	eError;
+		END_IF
+		
+	eError:
+		busy				:=	FALSE;
+		
+		IF rtReset.Q THEN
+			step			:=	eIdle;
+			errID			:=	0;
+		END_IF
+		
+	END_CASE
+
+	fbConnect(
+		sSrvNetId		:= , 
+		sRemoteHost		:= , 
+		nRemotePort		:= , 
+		bExecute		:= , 
+		tTimeout		:= , 
+		bBusy			=> , 
+		bError			=> , 
+		nErrId			=> , 
+		hSocket			=> );
+		
+	fbClose(
+		sSrvNetId		:= , 
+		hSocket			:= , 
+		bExecute		:= , 
+		tTimeout		:= , 
+		bBusy			=> , 
+		bError			=> , 
+		nErrId			=> );
+		
+	fbCloseAll(
+		sSrvNetId		:= , 
+		bExecute		:= , 
+		tTimeout		:= , 
+		bBusy			=> , 
+		bError			=> , 
+		nErrId			=> );
+		
+	fbSend(
+		sSrvNetId		:= , 
+		hSocket			:= , 
+		cbLen			:= , 
+		pSrc			:= , 
+		bExecute		:= , 
+		tTimeout		:= , 
+		bBusy			=> , 
+		bError			=> , 
+		nErrId			=> );
+
+
+
+
+
+
+
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

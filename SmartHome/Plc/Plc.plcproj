@@ -18,24 +18,6 @@
     <LibraryReferences>{27cb93a2-89f3-4df4-858c-8d64e22b4aa2}</LibraryReferences>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Elements\Buttons\FB_Keypad_4x2_Tap.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Elements\Buttons\FB_TapButton.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Elements\Buttons\FB_RotarySwitch.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Elements\Buttons\FB_SmartKeypad.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Elements\Buttons\FB_ToggleButton.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Elements\Buttons\ST_Keypad_4x2_Tap.TcDUT">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Elements\Common\E_Mode.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -78,7 +60,16 @@
     <Compile Include="Elements\Lights\ST_DigitalLamp_fb.TcDUT">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Elements\ST_AC_Swing.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Elements\ST_Curtain_Status.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Elements\ST_ACcontrol.TcDUT">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Elements\ST_ACStatus.TcDUT">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Elements\ST_Fan_ip.TcDUT">
@@ -114,12 +105,20 @@
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\PRG_HallRoom.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\PRG_Kitchen.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\PRG_SmartHome.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Trials\FB_HallRoom.TcPOU">
+    <Compile Include="POUs\TcpIp\FB_TcpIpClient.TcPOU">
       <SubType>Code</SubType>
-      <ExcludeFromBuild>true</ExcludeFromBuild>
+    </Compile>
+    <Compile Include="Trials\PRG_Testing.TcPOU">
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="Visualization Manager.TcVMO">
       <SubType>Code</SubType>
@@ -139,12 +138,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DUTs" />
-    <Folder Include="Elements\Buttons" />
     <Folder Include="Elements\Lights" />
     <Folder Include="Elements\Common" />
     <Folder Include="Elements\Helper" />
     <Folder Include="GVLs" />
     <Folder Include="Elements" />
+    <Folder Include="POUs\TcpIp" />
     <Folder Include="Trials" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
@@ -199,6 +198,9 @@
     <PlaceholderReference Include="Tc2_System">
       <DefaultResolution>Tc2_System, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_System</Namespace>
+    </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_TcpIp">
+      <DefaultResolution>Tc2_TcpIp, * (Beckhoff Automation GmbH)</DefaultResolution>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>

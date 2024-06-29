@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="PRG_Kitchen" Id="{6b282e00-63f8-43ea-bd6b-6706bbeae6e4}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_Kitchen
+VAR
+	fbLamp : ARRAY[0..1] OF FB_Lamp;
+	fbDimmer : ARRAY[0..1] OF FB_Dimmer;
+	i: INT;	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	FOR i := 0 TO 1 BY 1 DO
+		fbLamp[i]();
+		fbDimmer[i]();
+	END_FOR]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

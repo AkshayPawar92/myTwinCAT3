@@ -1,13 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1">
-  <POU Name="MAIN" Id="{6dd2527d-7fb2-444c-afaa-6b697e55f349}">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{6dd2527d-7fb2-444c-afaa-6b697e55f349}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
+	fbCurtainResp: FB_CurtainResp;
 END_VAR
-]]>
-    </Declaration>
+]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[
+	fbCurtainResp(
+	Open:= , 
+	Close:= , 
+	OpenToCloseTime:= , 
+	plcCylTime_mSec:= , 
+	AtOpen=> , 
+	AtClose=> );
+	]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

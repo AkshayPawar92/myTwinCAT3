@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="PRG_HallRoom" Id="{41486ad6-cc2d-41a2-8753-92a7daf9a437}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_HallRoom
+VAR
+	fbLamp : ARRAY[0..3] OF FB_Lamp;
+	fbDimmer : ARRAY[0..3] OF FB_Dimmer;
+	fbFan: FB_Fan;
+	fbCurtain: FB_Curtain;
+	i: INT;	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	FOR i := 0 TO 3 BY 1 DO
+		fbLamp[i]();
+		fbDimmer[i]();
+	END_FOR
+	fbFan();
+	
+	fbCurtain();
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

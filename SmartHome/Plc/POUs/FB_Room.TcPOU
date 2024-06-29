@@ -9,8 +9,8 @@ END_VAR
 VAR
 	fbLamp : ARRAY[0..3] OF FB_Lamp;
 	fbDimmer : ARRAY[0..3] OF FB_Dimmer;
-	fbFan: FB_Fan;
 	fbCurtain: FB_Curtain;
+	fbAC: FB_AC;
 	i: INT;
 END_VAR
 ]]></Declaration>
@@ -20,8 +20,8 @@ END_VAR
 		fbLamp[i]();
 		fbDimmer[i]();
 	END_FOR
-	fbFan();
 	
+	fbAC();
 	fbCurtain();
 	
 

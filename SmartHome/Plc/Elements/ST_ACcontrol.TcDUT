@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="ST_ACcontrol" Id="{d15acd5e-c70e-4c96-9178-5f0a3d8646fd}">
+    <Declaration><![CDATA[TYPE ST_ACcontrol :
+STRUCT
+	OnCmd: BOOL;
+	OffCmd: BOOL;
+	modeSelection: INT;
+	swing: ST_AC_Swing;
+	tempUp: BOOL;
+	tempDown: BOOL;
+	tempSP: REAL;
+	tempSP_prev: REAL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

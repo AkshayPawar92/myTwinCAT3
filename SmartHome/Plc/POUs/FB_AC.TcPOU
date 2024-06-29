@@ -7,10 +7,55 @@ END_VAR
 VAR_OUTPUT
 END_VAR
 VAR
+	ACcontrol: ST_ACcontrol;
+	ACstatus: ST_ACStatus;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[]]></ST>
+      <ST><![CDATA[
+	IF ACcontrol.OnCmd THEN
+		ACstatus.OnOff	:=	TRUE;
+	END_IF
+	IF ACcontrol.OffCmd THEN
+		ACstatus.OnOff	:=	FALSE;
+	END_IF
+	
+	ACstatus.mode	:= 	ACcontrol.modeSelection;	
+	
+	IF ACcontrol.swing.HorizOn THEN
+		ACstatus.HorizSwingOnOff	:=	TRUE;
+	END_IF
+	IF ACcontrol.swing.HorizOff THEN
+		ACstatus.HorizSwingOnOff	:=	FALSE;
+	END_IF
+	IF ACcontrol.swing.VertiOn THEN
+		ACstatus.VertiSwingOnOff	:=	TRUE;
+	END_IF
+	IF ACcontrol.swing.VertiOff THEN
+		ACstatus.VertiSwingOnOff	:=	FALSE;
+	END_IF
+	
+	IF ACcontrol.tempUp THEN
+		ACstatus.temp	:=	ACstatus.temp + 1;
+	END_IF
+	IF ACcontrol.tempDown THEN
+		ACstatus.temp	:=	ACstatus.temp - 1;
+	END_IF
+	IF ACcontrol.tempSP <> ACcontrol.tempSP_prev THEN
+		ACstatus.temp			:=	ACcontrol.tempSP;
+		ACcontrol.tempSP_prev	:=	ACcontrol.tempSP;
+	END_IF
+	
+
+
+
+
+
+
+
+
+
+]]></ST>
     </Implementation>
   </POU>
 </TcPlcObject>

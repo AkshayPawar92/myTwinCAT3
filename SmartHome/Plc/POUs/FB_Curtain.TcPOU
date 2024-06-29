@@ -16,7 +16,7 @@ VAR
 	Close	 AT%Q* : BOOL;	
 	
 	OpenPerc	: INT; 	//0: Closed .. 100: Full Open	
-	OpenToCloseTime: TIME := T#10S;	
+	OpenToCloseTime: INT := 10000;	
 	fbCurtainPos: FB_CurtainPos;
 	rtOpenCmd: R_TRIG;
 	rtCloseCmd: R_TRIG;
@@ -44,8 +44,10 @@ END_VAR
 	END_IF
 	
 	fbCurtainPos(
-		AtOpen:= Open, 
-		AtClose:= Close, 
+		OpenCmd:= Open,
+		CloseCmd:= Close,
+		AtOpen:= AtOpen, 
+		AtClose:= AtClose, 
 		plcCylTime_mSec:= 10, 
 		OpenToCloseTime:= OpenToCloseTime, 
 		OpenPerc=> OpenPerc);

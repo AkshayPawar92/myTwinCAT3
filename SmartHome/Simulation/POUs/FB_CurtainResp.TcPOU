@@ -5,7 +5,7 @@
 VAR_INPUT
 	Open	 AT%I* : BOOL;
 	Close	 AT%I* : BOOL;
-	OpenToCloseTime: TIME := 10000;		
+	OpenToCloseTime: INT := 10000;		
 	plcCylTime_mSec: INT := 10;	
 END_VAR
 VAR_OUTPUT
@@ -14,17 +14,40 @@ VAR_OUTPUT
 END_VAR
 VAR
 	OpenTime: INT;
-
+	rtAtOpen: R_TRIG;
+	rtAtClose: R_TRIG;
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
+	rtAtOpen(CLK:= AtOpen, Q=> );
+	rtAtClose(CLK:= AtClose, Q=> );
+
+	IF rtAtOpen.Q OR rtAtClose.Q THEN
+		;//OpenTime	:=	0;
+	END_IF
+	
 	OpenTime	:=	LIMIT(0 , OpenTime , OpenToCloseTime);
 
-	IF Open THEN
+	IF Open AND (NOT Close) THEN
 		OpenTime := OpenTime + plcCylTime_mSec;
+		AtOpen	:=	FALSE;
+		AtClose :=	FALSE;
+	END_IF
+	IF OpenTime >= OpenToCloseTime THEN
+		AtOpen	:=	TRUE;
+		AtClose	:=	FALSE;
 	END_IF
 
+	IF Close AND (NOT Open) THEN
+		OpenTime := (OpenTime - plcCylTime_mSec);
+		AtOpen	:=	FALSE;
+		AtClose :=	FALSE;
+	END_IF
+	IF OpenTime <= 0 THEN
+		AtOpen	:=	FALSE;
+		AtClose :=	TRUE;
+	END_IF
 
 
 
