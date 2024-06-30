@@ -3,8 +3,11 @@
   <POU Name="FB_Room" Id="{442c75c1-7593-4393-b6bc-5705fce27c62}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Room
 VAR_INPUT
+	AC_IPAddr: STRING;
+	ACcontrol: ST_ACcontrol;
 END_VAR
 VAR_OUTPUT
+	ACstatus: ST_ACStatus;
 END_VAR
 VAR
 	fbLamp : ARRAY[0..3] OF FB_Lamp;
@@ -21,7 +24,7 @@ END_VAR
 		fbDimmer[i]();
 	END_FOR
 	
-	fbAC();
+	fbAC(AC_IPAddr	:=	AC_IPAddr, ACcontrol:= ACcontrol, ACstatus=> ACstatus);
 	fbCurtain();
 	
 

@@ -33,12 +33,6 @@
     <Compile Include="Elements\Common\ST_TapCmd.TcDUT">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Elements\Helper\FB_CurtainPos.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Elements\Helper\F_Scaling.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Elements\Lights\E_ButtonSelection.TcDUT">
       <SubType>Code</SubType>
     </Compile>
@@ -81,6 +75,15 @@
     <Compile Include="GlobalTextList.TcGTLO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helper\FB_CommandHandling.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper\FB_CurtainPos.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper\F_Scaling.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
@@ -114,6 +117,9 @@
     <Compile Include="POUs\PRG_SmartHome.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\TcpIp\FB_ACcomm.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\TcpIp\FB_TcpIpClient.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -140,9 +146,9 @@
     <Folder Include="DUTs" />
     <Folder Include="Elements\Lights" />
     <Folder Include="Elements\Common" />
-    <Folder Include="Elements\Helper" />
     <Folder Include="GVLs" />
     <Folder Include="Elements" />
+    <Folder Include="Helper" />
     <Folder Include="POUs\TcpIp" />
     <Folder Include="Trials" />
     <Folder Include="VISUs" />

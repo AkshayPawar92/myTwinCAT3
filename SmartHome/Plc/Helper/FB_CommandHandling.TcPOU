@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_CommandHandling" Id="{e0647d08-dd07-4b3d-bb3c-12a49916e214}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CommandHandling
+VAR_INPUT
+	cmd: BOOL;
+	reset: BOOL;
+	timeout: INT := 5000;		//	in mSec
+END_VAR
+VAR_OUTPUT
+	Q: BOOL;
+	timeoutOccured: BOOL;
+END_VAR
+VAR
+	tonTimeout: TON;
+	rtCmd: R_TRIG;
+	rtReset: R_TRIG;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[	rtCmd(CLK:= cmd, Q=> );
+	rtReset(CLK:= reset, Q=> );
+
+	IF rtCmd.Q THEN
+		Q				:=	TRUE;
+		timeoutOccured	:=	FALSE;
+	END_IF
+	IF NOT cmd THEN
+		Q				:=	FALSE;
+		timeoutOccured	:=	FALSE;		
+	END_IF
+	tonTimeout(IN:= cmd, PT:= INT_TO_TIME(timeout), Q=> , ET=> );
+	IF tonTimeout.Q THEN
+		Q				:=	FALSE;
+		timeoutOccured	:=	TRUE;
+	END_IF
+	IF rtReset.Q THEN
+		Q				:=	FALSE;
+	END_IF
+
+
+
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

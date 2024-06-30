@@ -30,8 +30,10 @@ END_VAR
 		closeAll:= closeAll, 
 		busy=> busy, 
 		connected=> connected, 
+		bSendSuccess => ,		
 		sReceivedData=> sReceivedData,
 		nRecBytes=> nRecBytes,
+		bRecSuccess => ,
 		errId=> errId);
 
 	connect	:=	FALSE;

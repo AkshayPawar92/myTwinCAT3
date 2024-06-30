@@ -4,12 +4,13 @@
     <Declaration><![CDATA[PROGRAM PRG_SmartHome
 VAR
 	fbRoom: ARRAY[0..1] OF FB_Room;
+	AC_IPAddr: STRING := '192.168.1.7';
 END_VAR
 ]]></Declaration>
     <Implementation>
       <ST><![CDATA[
-	fbRoom[0]();
-	fbRoom[1]();
+	fbRoom[0](AC_IPAddr := AC_IPAddr, ACcontrol:= , ACstatus=> );
+	fbRoom[1](AC_IPAddr := );
 	PRG_HallRoom();
 	PRG_Kitchen();
 	

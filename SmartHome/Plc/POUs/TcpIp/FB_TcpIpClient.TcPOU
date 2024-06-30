@@ -15,8 +15,10 @@ END_VAR
 VAR_OUTPUT
 	busy: BOOL;
 	connected: BOOL;
+	bSendSuccess: BOOL;
 	sReceivedData: STRING(255);
 	nRecBytes: UDINT;
+	bRecSuccess: BOOL;
 	errId: UDINT;
 END_VAR
 VAR
@@ -47,6 +49,10 @@ END_VAR]]></Declaration>
 	rtReset		(CLK:= reset, Q=> );	
 	rtSend		(CLK:= send, Q=> );	
 
+	IF bSendSuccess AND (NOT send) THEN
+		bSendSuccess			:=	FALSE;
+	END_IF
+	
 	CASE step OF
 	eIdle:			
 		IF rtConnect.Q THEN
@@ -215,8 +221,9 @@ END_VAR]]></Declaration>
 			bExecute		:= FALSE);
 
 		IF (NOT fbSend.bBusy) AND (NOT fbSend.bError) THEN
-			step			:=	eIdle;
+			bSendSuccess	:=	TRUE;
 			busy			:=	FALSE;
+			step			:=	eIdle;
 		ELSIF fbSend.bError THEN
 			errID			:=	fbSend.nErrId;
 			step			:=	eError;
@@ -251,6 +258,7 @@ END_VAR]]></Declaration>
 			tonWait(IN:= FALSE);
 			step_rec			:=	ePreReceive_rec;	
 		END_IF
+		bRecSuccess				:=	FALSE;
 		
 	ePreReceive_rec:
 		fbReceive( 
@@ -277,6 +285,7 @@ END_VAR]]></Declaration>
 		IF (NOT fbReceive.bBusy) AND (NOT fbReceive.bError) THEN			
 			IF nRecBytes > 0 THEN				
 				sReceivedData		:=	LEFT(sReceivedData_loc, UDINT_TO_INT(nRecBytes));
+				bRecSuccess			:=	TRUE;
 			END_IF
 			step_rec		:=	eWait_rec;			
 		ELSIF fbReceive.bError THEN

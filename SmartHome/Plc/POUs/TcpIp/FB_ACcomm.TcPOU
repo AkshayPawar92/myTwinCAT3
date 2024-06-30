@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_ACcomm" Id="{5e10be0d-30b7-4623-9d10-868727ce6d59}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ACcomm
+VAR_INPUT
+	AC_IPAddr: STRING;
+	sCmd: STRING;
+	bSend: BOOL;
+END_VAR
+VAR_OUTPUT
+	sResponse: STRING;
+	bResponseReceived: BOOL;
+	bNoResponse: BOOL;
+END_VAR
+VAR
+	fbTcpIpCommWithAC: FB_TcpIpClient;
+	step_ACcomm: (eIdle, eError, ePreConnect, eConnect, eMonitor, eOn, eOff, eModeChange, eSwing, eTempChange);
+	
+	rtSend: R_TRIG;
+	tonSendCmdTimeout: TON;
+	fbSendCmd: FB_CommandHandling;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	fbSendCmd(cmd:= bSend, reset:= fbTcpIpCommWithAC.bSendSuccess, timeoutOccured => bNoResponse, timeout:= , Q=> );
+	
+	CASE step_ACcomm OF
+	eIdle:
+		IF (fbTcpIpCommWithAC.srvIpAddr <> '') AND (NOT fbTcpIpCommWithAC.connected) AND (NOT fbTcpIpCommWithAC.busy) THEN
+			fbTcpIpCommWithAC(connect:= FALSE);
+			step_ACcomm		:=	ePreConnect;
+		END_IF
+		
+	ePreConnect: 
+		fbTcpIpCommWithAC(
+			connect			:= TRUE, 
+			srvIpAddr		:= AC_IPAddr, 
+			port			:= 23);
+		
+		IF fbTcpIpCommWithAC.busy THEN
+			step_ACcomm		:=	eMonitor;
+		ELSIF fbTcpIpCommWithAC.errId <> 0 THEN
+			step_ACcomm		:=	eError;
+		END_IF
+			
+	eConnect:
+		fbTcpIpCommWithAC(
+			connect			:= FALSE, 
+			srvIpAddr		:= AC_IPAddr, 
+			port			:= 23);
+		
+		IF (NOT fbTcpIpCommWithAC.busy) AND (fbTcpIpCommWithAC.connected) THEN
+			step_ACcomm		:=	eMonitor;
+		ELSIF fbTcpIpCommWithAC.errId <> 0 THEN
+			step_ACcomm		:=	eError;
+		END_IF
+					
+	eMonitor:
+		fbTcpIpCommWithAC(sData	:=	sCmd, send:= fbSendCmd.Q, sReceivedData => sResponse);
+	
+		IF fbTcpIpCommWithAC.errId <> 0 THEN
+			step_ACcomm		:=	eError;	
+		END_IF
+		
+	eError:	
+		step_ACcomm			:=	eIdle;
+	END_CASE
+	
+	fbTcpIpCommWithAC(
+		connect:= , 
+		srvIpAddr:= AC_IPAddr, 
+		port:= , 
+		sData:= , 
+		send:= , 
+		reset:= , 
+		close:= , 
+		closeAll:= , 
+		busy=> , 
+		connected=> , 
+		bSendSuccess => ,
+		sReceivedData=> , 
+		nRecBytes=> , 
+		bRecSuccess => bResponseReceived,
+		errId=> );
+	]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
