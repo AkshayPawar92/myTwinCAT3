@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
-  <POU Name="FB_Lamp" Id="{e8e36695-b9a1-4ccd-9563-e0163e876f6d}" SpecialFunc="None">
+  <POU Name="FB_Lamp" Id="{5abcbe38-7ba1-4731-834c-dc3acbe917e9}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_Lamp
 VAR_INPUT
-	
 END_VAR
 VAR_OUTPUT
 END_VAR

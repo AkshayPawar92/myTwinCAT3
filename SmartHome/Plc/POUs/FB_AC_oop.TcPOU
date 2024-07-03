@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_AC_oop" Id="{14ca9cec-10ec-4cfe-892d-51aa9dcda38e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AC_oop IMPLEMENTS I_AC
+VAR_INPUT
+//	AC_IPAddr: STRING;
+//	ACcontrol: ST_ACcontrol;
+END_VAR
+VAR_OUTPUT
+//	ACstatus: ST_ACStatus;
+END_VAR
+VAR
+	_AC_IPAddr: STRING;
+	_ACcontrol: ST_ACcontrol;
+	_ACstatus: ST_ACStatus;	
+	
+	fbACcomm: FB_ACcomm;
+	prevMode: INT;
+	step: (eIdle, eOn, eOff, eModeChange, eError);
+	fbOnCmd: FB_CommandHandling;
+	fbOffCmd: FB_CommandHandling;
+	fbModeChangeCmd: FB_CommandHandling;
+END_VAR
+
+VAR CONSTANT
+	cOnCmd: STRING := 'AC On Cmd';
+	cOffCmd: STRING := 'AC Off Cmd';
+	cModeChangeCmd: STRING := 'AC Mode = ';
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+	fbACcomm( AC_IPAddr	:=	AC_IPAddr );
+	
+	fbOnCmd(cmd:= _ACcontrol.OnCmd, timeoutOccured => , reset:= , timeout:= , Q=> );
+	fbOffCmd(cmd:= _ACcontrol.OffCmd, timeoutOccured => , reset:= , timeout:= , Q=> );
+	fbModeChangeCmd(cmd:= _ACcontrol.modeSelection <> prevMode, timeoutOccured => , reset:= , timeout:= , Q=> );
+	prevMode	:=	_ACcontrol.modeSelection;
+	
+	CASE step OF 
+	eIdle: 
+		IF fbOnCmd.Q THEN
+			step		:=	eOn;
+		END_IF
+		IF fbOffCmd.Q THEN
+			step		:=	eOff;
+		END_IF
+		IF fbModeChangeCmd.Q THEN
+			step		:=	eModeChange;
+		END_IF
+			
+	eOn:
+		fbACcomm(sCmd:= cOnCmd, bSend:= TRUE);
+		IF fbACcomm.bResponseReceived OR fbACcomm.bNoResponse THEN
+			fbACcomm(sCmd:= , bSend:= FALSE );
+			step		:=	eIdle;
+		END_IF
+		
+	eOff:
+		fbACcomm(sCmd:= cOffCmd, bSend:= TRUE);
+		IF fbACcomm.bResponseReceived OR fbACcomm.bNoResponse THEN
+			fbACcomm(sCmd:= , bSend:= FALSE );
+			step		:=	eIdle;
+		END_IF
+		
+	eModeChange:
+		fbACcomm(sCmd:= CONCAT(cModeChangeCmd, INT_TO_STRING(_ACcontrol.modeSelection)), bSend:= TRUE);
+		IF fbACcomm.bResponseReceived OR fbACcomm.bNoResponse THEN
+			fbACcomm(sCmd:= , bSend:= FALSE );
+			step		:=	eIdle;
+		END_IF
+		
+	eError:
+	END_CASE
+	
+	
+	
+]]></ST>
+    </Implementation>
+    <Property Name="AC_IPAddr" Id="{1285711b-bd62-4eec-be18-09c349a08dc5}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY AC_IPAddr : STRING
+]]></Declaration>
+      <Get Name="Get" Id="{14673c62-7207-4238-99a7-65c089ab3492}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_AC_IPAddr	:=	AC_IPAddr;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="ACcontrol" Id="{0121a940-24f5-480f-99f5-7633a0e894ed}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY ACcontrol : ST_ACcontrol
+]]></Declaration>
+      <Get Name="Get" Id="{4014582f-3732-452f-9637-84e4fdde38ac}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[_ACcontrol	:=	ACcontrol;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="ACstatus" Id="{8ba01ff4-e1e7-423b-80f1-b022ad42e3b0}">
+      <Declaration><![CDATA[{warning 'add property implementation'}
+PROPERTY ACstatus : ST_ACStatus
+]]></Declaration>
+      <Set Name="Set" Id="{30efae42-45e2-4a1d-a03e-69976295c322}">
+        <Declaration><![CDATA[VAR
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[ACstatus	:=	_ACstatus;
+]]></ST>
+        </Implementation>
+      </Set>
+    </Property>
+  </POU>
+</TcPlcObject>

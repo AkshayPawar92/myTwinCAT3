@@ -15,6 +15,7 @@ VAR
 	fbCurtain: FB_Curtain;
 	fbAC: FB_AC;
 	i: INT;
+	fbAC_oop: FB_AC_oop;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -24,10 +25,10 @@ END_VAR
 		fbDimmer[i]();
 	END_FOR
 	
-	fbAC(AC_IPAddr	:=	AC_IPAddr, ACcontrol:= ACcontrol, ACstatus=> ACstatus);
+	//fbAC(AC_IPAddr	:=	AC_IPAddr, ACcontrol:= ACcontrol, ACstatus=> ACstatus);
 	fbCurtain();
 	
-
+	
 	
 	
 

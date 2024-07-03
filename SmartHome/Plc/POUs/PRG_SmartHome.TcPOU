@@ -10,9 +10,9 @@ END_VAR
     <Implementation>
       <ST><![CDATA[
 	fbRoom[0](AC_IPAddr := AC_IPAddr, ACcontrol:= , ACstatus=> );
-	fbRoom[1](AC_IPAddr := );
-	PRG_HallRoom();
-	PRG_Kitchen();
+//	fbRoom[1](AC_IPAddr := );
+//	PRG_HallRoom();
+//	PRG_Kitchen();
 	
 	
 

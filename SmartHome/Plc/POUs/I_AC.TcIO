@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_AC" Id="{cc060126-c6b2-433b-814d-4f8776017342}">
+    <Declaration><![CDATA[INTERFACE I_AC
+]]></Declaration>
+    <Property Name="AC_IPAddr" Id="{cfd8c9f4-33a5-4fb1-b98c-acce511c52fe}">
+      <Declaration><![CDATA[PROPERTY AC_IPAddr : STRING]]></Declaration>
+      <Get Name="Get" Id="{880535e4-b28b-4f64-b9e4-387379a70623}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="ACcontrol" Id="{16a9f649-4679-4a86-9ab7-9ffe51e572ad}">
+      <Declaration><![CDATA[PROPERTY ACcontrol : ST_ACcontrol]]></Declaration>
+      <Get Name="Get" Id="{11c8a96d-2dcd-4202-bb7f-9fcf12f74ace}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="ACstatus" Id="{4b9b7d4c-8109-4f9c-b4fb-d0d537c708f8}">
+      <Declaration><![CDATA[PROPERTY ACstatus : ST_ACStatus]]></Declaration>
+      <Set Name="Set" Id="{83cc7277-db43-4dcb-9940-a7a687579ff0}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Set>
+    </Property>
+  </Itf>
+</TcPlcObject>
